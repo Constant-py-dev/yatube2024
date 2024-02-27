@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views, converters
 from django.urls.converters import register_converter
+
+from . import views, converters
 
 register_converter(converters.My_slug, type_name='myslug')
 app_name = 'posts'

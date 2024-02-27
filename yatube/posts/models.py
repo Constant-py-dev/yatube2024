@@ -8,7 +8,7 @@ User = get_user_model()
 class Group(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(blank=True, null=True, unique=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title, allow_unicode=True)
