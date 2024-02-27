@@ -1,18 +1,22 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
+from .models import Post, Group
 
 # Create your views here.
 def index(request):
     title = 'Это главная страница проекта Yatube'
+    posts = Post.objects.all().order_by('-pub_date')[:10]
     context = {
-        'title': title
+        'title': title,
+        'posts': posts,
     }
     return render(request, 'posts/index.html', context=context)
 
 
 def group_posts(request, slug):
-    title = 'Здесь будет информация о группах проекта Yatube'
+    group = get_object_or_404(Group, slug=slug)
+    posts = Post.objects.filter(group=group)
     context = {
-        'title': title
+        'posts': posts,
+        'group': group
     }
     return render(request, 'posts/group_list.html', context=context)
