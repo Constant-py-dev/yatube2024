@@ -1,14 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 
 from .models import Post, Group
 
+NUMBER_POSTS = 10
 
-# Create your views here.
+
 def index(request):
-    title = 'Последние обновления на сайте.'
-    posts = Post.objects.all().order_by('-pub_date')[:10]
+    posts = get_list_or_404(Post.objects.all().order_by('-pub_date')[:NUMBER_POSTS])
     context = {
-        'title': title,
         'posts': posts,
     }
     return render(request, 'posts/index.html', context=context)
@@ -16,7 +15,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts = Post.objects.filter(group=group)
+    posts = Post.objects.filter(group=group)[:NUMBER_POSTS]
     context = {
         'posts': posts,
         'group': group
