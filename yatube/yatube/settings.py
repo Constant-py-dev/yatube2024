@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'posts',
     'users',
     'core',
+    'about',
     'django_extensions',
     'debug_toolbar',
 ]
