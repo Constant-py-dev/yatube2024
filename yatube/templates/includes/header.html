@@ -1,11 +1,60 @@
 {% load static %}
 <header>
-    <nav class="navbar navbar-light" style="background-color: lightskyblue">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'posts:index' %}">
-                <img src="{%static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-                <span style="color:red">Ya</span>tube
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" >
+        <div class="container-fluid" style="background-color: lightskyblue">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Переключатель навигации">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand me-auto" style="padding-left:5px" href="{% url 'posts:index' %}">
+                <img src="{% static 'img/logo.png' %}" width="30" height="30"  class="d-inline-block align-top" alt="">
+                <span style="color:red"> Ya</span>tube
             </a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03" style="padding-left:20px">
+                {% with request.resolver_match.view_name as view_name %}
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {% if view_name  == 'about:author' %} active {% endif %}"
+                                href="{% url 'about:author' %}"
+                            >
+                                Об авторе
+                            </a>
+                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if view_name  == 'about:tech' %} active {% endif %}"
+                               href="{% url 'about:tech' %}"
+                            >
+                                Технологии
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Новая запись</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-light" href="{% url 'users:password_change' %}">Изменить пароль</a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="post" action="{% url 'users:logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="nav-link link-light">Выйти</button>
+                                </form>
+                            </li>
+                            <li>
+                                <a class="nav-link {% if view_name  == 'posts:profile' and author == user %} active {% endif %}" href="{% url 'posts:profile' user.username %}">Пользователь: {{ user.username }}</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link link-light" href="{% url 'users:login' %}">Войти</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-light" href="{% url 'users:signup' %}">Регистрация</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endwith %}
+            </div>
         </div>
     </nav>
 </header>
