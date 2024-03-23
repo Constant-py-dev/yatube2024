@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
+from .forms import PostForm
 from .models import Post, Group, User
 
 NUMBER_POSTS = 10
@@ -61,8 +62,20 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     # post= get_object_or_404(Post, id=post_id)
-    post= Post.objects.select_related('author','group').get(id=post_id)
+    post = Post.objects.select_related('author', 'group').get(id=post_id)
     context = {
         'post': post
     }
     return render(request, 'posts/post_detail.html', context)
+
+
+@login_required
+def post_create(request):
+    form = PostForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('posts:profile', request.user)
+    return render(request, 'posts/post_create.html', {'form': form})
