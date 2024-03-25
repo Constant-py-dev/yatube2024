@@ -3,3 +3,5 @@ ipython==8.22.1
 django-extensions==3.2.3
 django-debug-toolbar == 4.3.0
 python-dotenv==1.0.1
+pillow==10.2.0
+sorl-thumbnail==12.10.0
