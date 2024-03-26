@@ -1,11 +1,12 @@
 from django.contrib import admin
 
-from .models import Post, Group
+from .models import Post, Group, Comment
 
 admin.site.site_header = 'Админ панель'
 admin.site.index_title = 'Администрирование Yatube'
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'pub_date', 'author', 'group')
     search_fields = ('text',)
@@ -14,5 +15,15 @@ class PostAdmin(admin.ModelAdmin):
     empty_value_display = "-пусто-"
 
 
-admin.site.register(Post, PostAdmin)
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'post', 'author', 'text', 'created')
+    search_fields = ('author',)
+    list_filter = ('created',)
+    readonly_fields = ('author', 'post', 'created')
+
+    def has_add_permission(self, request):
+        return False
+
+
 admin.site.register(Group)
