@@ -28,6 +28,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', verbose_name='Автор')
     group = models.ForeignKey(Group, blank=True, null=True, on_delete=models.SET_NULL, related_name='posts',
                               verbose_name='Группа')
+    image = models.ImageField('Картинка', upload_to='posts/', blank=True)
 
     class Meta:
         ordering = ('-pub_date',)
