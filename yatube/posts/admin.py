@@ -9,9 +9,12 @@ admin.site.index_title = 'Администрирование Yatube'
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'pub_date', 'author', 'group')
+    list_select_related = ['author', 'group']
     search_fields = ('text',)
     list_filter = ('pub_date',)
-    list_editable = ('group',)
+    # list_editable = ('group',)
+    list_per_page = 20
+    autocomplete_fields = ['author']
     empty_value_display = "-пусто-"
 
 
